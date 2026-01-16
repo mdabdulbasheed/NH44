@@ -1,103 +1,162 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NH-44: Srinagar to Kanyakumari</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet/dist/leaflet.css"
-  />
+  <title>NH-44 Journey Explorer | Srinagar to Kanyakumari</title>
+  <meta name="description" content="Explore NH-44, India’s longest national highway. Interactive map, states, capitals, timeline, toll estimates, and journey insights." />
 
-  <link rel="stylesheet" href="style.css">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
-<h2>NH-44 Journey: Srinagar → Kanyakumari</h2>
-<div id="distanceInfo" class="distance-info">
-  <div class="distance-container">
-    <div class="distance-item">
-      <div class="distance-label">🛣️ Total Distance</div>
-      <div class="distance-value"><span id="totalDistance">4112</span> km</div>
+<header class="site-header">
+  <h1>NH-44 Journey Explorer</h1>
+  <p class="subtitle">Srinagar → Kanyakumari | India’s Longest Highway</p>
+</header>
+
+<main>
+
+  <!-- Distance Summary -->
+  <section class="distance-info">
+    <div class="distance-container">
+      <div class="distance-item">
+        <div class="distance-label">🛣️ Total Distance</div>
+        <div class="distance-value"><span id="totalDistance">4112</span> km</div>
+      </div>
+
+      <div class="distance-divider"></div>
+
+      <div class="distance-item">
+        <div class="distance-label">⏱️ Estimated Time</div>
+        <div class="distance-value"><span id="travelTime">~60</span> Hours</div>
+      </div>
     </div>
-    <div class="distance-divider"></div>
-    <div class="distance-item">
-      <div class="distance-label">⏱️ Estimated Time</div>
-      <div class="distance-value"><span id="travelTime">~60</span> Hours</div>
+  </section>
+
+  <!-- Map -->
+  <section>
+    <div id="map"></div>
+  </section>
+
+  <!-- States Table -->
+  <section>
+    <h2>States and Capitals Along NH-44</h2>
+
+    <div class="search-container">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="🔍 Search states or capitals..."
+        class="search-input"
+      />
     </div>
-  </div>
-</div>
-<div id="map"></div>
 
-<h3><span>States and Capitals Along NH-44</span></h3>
+    <table id="statesTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>State</th>
+          <th>Capital</th>
+          <th>Specialty & Resources</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
 
-<!-- Search Bar -->
-<div class="search-container">
-  <input type="text" id="searchInput" placeholder="🔍 Search states or capitals..." class="search-input">
-</div>
+  <!-- Timeline Section -->
+  <section id="timelineSection" class="info-section">
+    <h2>🗺️ Journey Timeline</h2>
+    <p class="section-note">
+      Approximate milestones when traveling from north to south.
+    </p>
+    <div id="timelineContainer">
+      <!-- JS will populate this -->
+    </div>
+  </section>
 
-<table id="statesTable" border="1" cellpadding="10" cellspacing="0">
-  <thead>
-    <tr>
-      <th>Image</th>
-      <th>State</th>
-      <th>Capital</th>
-      <th>Specialty & Resources</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+  <!-- Toll Estimator -->
+  <section id="tollSection" class="info-section">
+    <h2>💰 Toll & Travel Cost Estimate</h2>
+    <p>
+      Estimated toll cost for a car across the NH-44 corridor.
+    </p>
+    <div id="tollInfo">
+      <strong>Estimated Total Toll:</strong> ₹3,000 – ₹4,000 (Car)
+    </div>
+  </section>
 
-<!-- About NH-44 Section -->
-<section id="aboutSection" class="info-section">
-  <h3>ℹ️ About NH-44</h3>
-  <div class="info-content">
-    <p><strong>NH-44 (National Highway 44)</strong> is the longest national highway in India, also known as the Golden Quadrilateral of North-South Corridor. It connects the four major metropolitan cities of India and passes through diverse landscapes, cultures, and economies.</p>
-    <p><strong>Key Facts:</strong></p>
+  <!-- Rest Stops -->
+  <section id="restStopsSection" class="info-section">
+    <h2>🛑 Major Rest Stops & Cities</h2>
+    <div id="restStopsContainer">
+      <!-- JS or static list later -->
+    </div>
+  </section>
+
+  <!-- About Project -->
+  <section id="aboutSection" class="info-section">
+    <h2>ℹ️ About This Project</h2>
+    <p>
+      This project visualizes the complete journey along NH-44 using web
+      technologies. It combines geographic data, state-wise information,
+      and travel insights into a single interactive experience.
+    </p>
+
     <ul>
-      <li>Total Length: 4,112 km</li>
-      <li>States Covered: 12 states</li>
-      <li>Major Cities: Srinagar, Delhi, Agra, Nagpur, Hyderabad, Bengaluru, and Kanyakumari</li>
-      <li>Estd. Driving Time: 59 hours (non-stop)</li>
-      <li>Passes through: Mountains, plains, plateaus, and coastal regions</li>
+      <li><strong>Highway:</strong> NH-44 (National Highway 44)</li>
+      <li><strong>Total Length:</strong> 4,112 km</li>
+      <li><strong>States Covered:</strong> 12</li>
+      <li><strong>Tech Stack:</strong> HTML, CSS, JavaScript, Leaflet.js</li>
+      <li><strong>Deployment:</strong> GitHub Pages</li>
     </ul>
-  </div>
-</section>
+  </section>
 
-<!-- Scroll to Top Button -->
+</main>
+
+<!-- Scroll Button -->
 <button id="scrollToTop" class="scroll-top-btn">↑ Top</button>
 
 <!-- Footer -->
 <footer class="footer">
   <div class="footer-content">
     <div class="footer-section">
-      <h4>About NH-44</h4>
-      <p>Exploring India's longest highway connecting the north and south.</p>
+      <h4>NH-44 Journey Explorer</h4>
+      <p>India’s longest road journey, visualized.</p>
     </div>
+
     <div class="footer-section">
       <h4>Quick Links</h4>
       <ul>
-        <li><a href="#aboutSection">About</a></li>
+        <li><a href="#map">Map</a></li>
         <li><a href="#statesTable">States</a></li>
         <li><a href="#timelineSection">Timeline</a></li>
-        <li><a href="#restStopsSection">Rest Stops</a></li>
+        <li><a href="#aboutSection">About</a></li>
       </ul>
     </div>
+
     <div class="footer-section">
-      <h4>Information</h4>
-      <p>Total Distance: 4,112 km</p>
-      <p>Total States: 12</p>
-      <p>Estd. Time: 59 hours</p>
+      <h4>Stats</h4>
+      <p>Distance: 4,112 km</p>
+      <p>States: 12</p>
+      <p>Time: ~59 hours</p>
     </div>
   </div>
+
   <div class="footer-bottom">
-    <p>&copy; 2026 NH-44 Journey Explorer. All rights reserved.</p>
+    <p>&copy; 2026 NH-44 Journey Explorer</p>
   </div>
 </footer>
 
-<!-- State Details Modal -->
+<!-- Modal -->
 <div id="stateModal" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>
@@ -106,6 +165,7 @@
   </div>
 </div>
 
+<!-- Scripts -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="script.js"></script>
 

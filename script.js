@@ -1,187 +1,162 @@
 // ==========================================
-// NH-44 HIGHWAY PROJECT - CLEAN START
+// NH-44 JOURNEY EXPLORER - REFACTORED
 // ==========================================
 
-// State Data - Complete information for all 12 states
-var nh44Data = [
-  { state: "Jammu and Kashmir", capital: "Srinagar", image: "images/JammuandKashmir.jpg", specialties: "Kashmir Handicrafts, Saffron, Apple Orchards, Adventure Tourism", description: "Known as 'Crown Jewel of India' with Himalayan mountains, Dal Lake, and Gulmarg ski resort." },
-  { state: "Himachal Pradesh", capital: "Shimla", image: "images/HimachalPradesh.jpg", specialties: "Apple Orchards, Hill Stations, Adventure Sports, Hydroelectric Power", description: "Mountainous state famous for scenic beauty, adventure tourism, and traditional crafts." },
-  { state: "Punjab", capital: "Chandigarh", image: "images/Punjab.jpg", specialties: "Agriculture (Wheat, Rice), Golden Temple, Textile Industry", description: "'Granary of India' known for agricultural prosperity and Sikh heritage." },
-  { state: "Haryana", capital: "Chandigarh", image: "images/Haryana.jpg", specialties: "Automobiles, Manufacturing, Agriculture, IT Services", description: "Industrially developed state surrounding Delhi with significant manufacturing hub." },
-  { state: "Delhi", capital: "New Delhi", image: "images/NewDelhi.jpg", specialties: "Historical Monuments, Government Hub, Cultural Center, Education", description: "Capital of India - blend of ancient heritage and modern development." },
-  { state: "Uttar Pradesh", capital: "Lucknow", image: "images/Uttarpradesh.jpg", specialties: "Taj Mahal, Varanasi Temples, Agriculture, Textiles", description: "Most populous state with immense historical and religious significance." },
-  { state: "Madhya Pradesh", capital: "Bhopal", image: "images/MadhyaPradesh.jpg", specialties: "Diamonds & Minerals, Temple Architecture, Wildlife, Handlooms", description: "'Heart of India' known for rich mineral resources and cultural heritage." },
-  { state: "Maharashtra", capital: "Mumbai", image: "images/Maharastra.jpg", specialties: "Bollywood Industry, Financial Hub, Manufacturing, IT Services", description: "Economic powerhouse with Mumbai as financial and entertainment center." },
-  { state: "Telangana", capital: "Hyderabad", image: "images/Telangana.jpg", specialties: "IT & Software Services, Pharma, Bitech, Electronics Manufacturing", description: "'State of Startups' with Hyderabad as major IT hub." },
-  { state: "Andhra Pradesh", capital: "Amaravati", image: "images/AndhraPradesh.jpg", specialties: "Rice Production, Silk Sarees, Tirupati Temple, Handicrafts", description: "Famous for temples, handicrafts, and agricultural products." },
-  { state: "Karnataka", capital: "Bengaluru", image: "images/Karnataka.jpg", specialties: "IT Industry, Coffee, Aerospace & Space Technology, Silk", description: "India's IT capital with numerous technology companies and startups." },
-  { state: "Tamil Nadu", capital: "Chennai", image: "images/Tamilnadu.jpg", specialties: "Automotive, Textiles, Leather Goods, Traditional Arts, Temples", description: "Highly developed industrial state with rich cultural heritage." }
+const nh44Data = [
+  { state: "Jammu and Kashmir", capital: "Srinagar", image: "images/JammuandKashmir.jpg", specialties: "Handicrafts, Saffron, Apples", description: "Himalayan region with rich culture and scenic beauty." },
+  { state: "Himachal Pradesh", capital: "Shimla", image: "images/HimachalPradesh.jpg", specialties: "Hill Stations, Hydropower", description: "Mountain state known for tourism and orchards." },
+  { state: "Punjab", capital: "Chandigarh", image: "images/Punjab.jpg", specialties: "Agriculture, Golden Temple", description: "Granary of India with Sikh heritage." },
+  { state: "Haryana", capital: "Chandigarh", image: "images/Haryana.jpg", specialties: "Manufacturing, Automobiles", description: "Industrial state around Delhi NCR." },
+  { state: "Delhi", capital: "New Delhi", image: "images/NewDelhi.jpg", specialties: "Administration, History", description: "Capital city of India." },
+  { state: "Uttar Pradesh", capital: "Lucknow", image: "images/Uttarpradesh.jpg", specialties: "Taj Mahal, Temples", description: "Cultural and historical heartland." },
+  { state: "Madhya Pradesh", capital: "Bhopal", image: "images/MadhyaPradesh.jpg", specialties: "Wildlife, Minerals", description: "Central India, rich in heritage." },
+  { state: "Maharashtra", capital: "Mumbai", image: "images/Maharastra.jpg", specialties: "Finance, Bollywood", description: "Economic powerhouse." },
+  { state: "Telangana", capital: "Hyderabad", image: "images/Telangana.jpg", specialties: "IT, Pharma", description: "Major tech ecosystem." },
+  { state: "Andhra Pradesh", capital: "Amaravati", image: "images/AndhraPradesh.jpg", specialties: "Temples, Agriculture", description: "Cultural and spiritual hub." },
+  { state: "Karnataka", capital: "Bengaluru", image: "images/Karnataka.jpg", specialties: "IT, Aerospace", description: "India’s Silicon Valley." },
+  { state: "Tamil Nadu", capital: "Chennai", image: "images/Tamilnadu.jpg", specialties: "Automobile, Temples", description: "Industrial and cultural state." }
 ];
 
-// Populate the table on page load
-document.addEventListener('DOMContentLoaded', function() {
+const timelineStops = [
+  "Srinagar", "Chandigarh", "Delhi", "Gwalior",
+  "Nagpur", "Hyderabad", "Bengaluru", "Kanyakumari"
+];
+
+document.addEventListener("DOMContentLoaded", () => {
   populateTable();
   setupSearch();
   setupScroll();
+  buildTimeline();
+  buildRestStops();
+  initMap();
 });
 
-// Function to populate the states table
+// ---------------- TABLE ----------------
 function populateTable() {
-  const tableBody = document.querySelector('#statesTable tbody');
-  
-  if (!tableBody) {
-    console.error('Table body not found');
-    return;
-  }
-  
-  // Clear existing rows
-  tableBody.innerHTML = '';
-  
-  // Add each state as a row
-  nh44Data.forEach(state => {
-    const row = document.createElement('tr');
+  const tbody = document.querySelector("#statesTable tbody");
+  tbody.innerHTML = "";
+
+  nh44Data.forEach((s, index) => {
+    const row = document.createElement("tr");
     row.innerHTML = `
-      <td class="table-image">
-        <img src="${state.image}" alt="${state.state}" class="state-image" onerror="this.src='https://via.placeholder.com/100?text=${state.state}'">
-      </td>
-      <td class="table-state"><strong>${state.state}</strong></td>
-      <td class="table-capital">${state.capital}</td>
-      <td class="table-specialty">${state.specialties}</td>
-      <td class="table-description">${state.description}</td>
+      <td>${index + 1}</td>
+      <td><strong>${s.state}</strong></td>
+      <td>${s.capital}</td>
+      <td>${s.specialties}</td>
+      <td>${s.description}</td>
     `;
-    tableBody.appendChild(row);
+    row.addEventListener("click", () => openModal(s));
+    tbody.appendChild(row);
   });
-  
-  console.log('✓ Table populated with ' + nh44Data.length + ' states');
 }
 
-// Function to setup search functionality
+// ---------------- MODAL ----------------
+function openModal(state) {
+  document.getElementById("modalTitle").innerText = state.state;
+  document.getElementById("modalBody").innerHTML = `
+    <img src="${state.image}" class="state-image" />
+    <p><strong>Capital:</strong> ${state.capital}</p>
+    <p><strong>Specialties:</strong> ${state.specialties}</p>
+    <p>${state.description}</p>
+  `;
+  document.getElementById("stateModal").style.display = "block";
+}
+
+document.querySelector(".close").onclick = () =>
+  (document.getElementById("stateModal").style.display = "none");
+
+// ---------------- SEARCH ----------------
 function setupSearch() {
-  const searchInput = document.getElementById('searchInput');
-  
-  if (!searchInput) return;
-  
-  searchInput.addEventListener('keyup', function() {
-    const searchTerm = this.value.toLowerCase();
-    const rows = document.querySelectorAll('#statesTable tbody tr');
-    
-    rows.forEach(row => {
-      const text = row.textContent.toLowerCase();
-      row.style.display = text.includes(searchTerm) ? '' : 'none';
+  document.getElementById("searchInput").addEventListener("keyup", e => {
+    const val = e.target.value.toLowerCase();
+    document.querySelectorAll("#statesTable tbody tr").forEach(row => {
+      row.style.display = row.textContent.toLowerCase().includes(val) ? "" : "none";
     });
   });
 }
 
-// Function to setup scroll to top button
+// ---------------- SCROLL ----------------
 function setupScroll() {
-  const scrollBtn = document.getElementById('scrollToTop');
-  
-  if (!scrollBtn) return;
-  
-  window.addEventListener('scroll', function() {
-    scrollBtn.style.display = window.pageYOffset > 300 ? 'block' : 'none';
+  const btn = document.getElementById("scrollToTop");
+  window.addEventListener("scroll", () => {
+    btn.classList.toggle("show", window.scrollY > 300);
   });
-  
-  scrollBtn.addEventListener('click', function() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
+  btn.onclick = () => window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-// Initialize map
-var map = L.map('map', {
-  minZoom: 4,
-  maxZoom: 10,
-  maxBounds: L.latLngBounds(L.latLng(5, 65), L.latLng(38, 98)),
-  maxBoundsViscosity: 1.0,
-  zoomControl: false,
-  scrollWheelZoom: false,
-  touchZoom: false,
-  doubleClickZoom: true,
-  dragging: true
-}).setView([22.5, 78.9], 5);
+// ---------------- TIMELINE ----------------
+function buildTimeline() {
+  const container = document.getElementById("timelineContainer");
+  container.innerHTML = timelineStops.map(stop => `
+    <div class="timeline-item">
+      <div class="timeline-marker"></div>
+      <div class="timeline-content"><strong>${stop}</strong></div>
+    </div>
+  `).join("");
+}
 
-// Add custom zoom buttons
-L.control.zoom({position: 'topleft'}).addTo(map);
+// ---------------- REST STOPS ----------------
+function buildRestStops() {
+  const container = document.getElementById("restStopsContainer");
+  container.className = "rest-stops-grid";
+  container.innerHTML = timelineStops.map(city => `
+    <div class="rest-stop-card">
+      <h4>${city}</h4>
+      <p>Fuel • Food • Lodging</p>
+    </div>
+  `).join("");
+}
 
-// Add map tiles
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '© OpenStreetMap contributors',
-  maxZoom: 19
-}).addTo(map);
+// ---------------- MAP ----------------
+function initMap() {
+  const map = L.map("map", {
+    center: [22.5, 78.9],
+    zoom: 5,
+    minZoom: 5,
+    maxZoom: 8,
 
-// NH-44 route coordinates
-var routeCoords = [
-  [34.0837, 74.7973],   // Srinagar
-  [30.7333, 76.8277],   // Chandigarh
-  [28.6139, 77.2090],   // Delhi
-  [27.1767, 78.0081],   // Agra
-  [25.4484, 78.5685],   // Jhansi
-  [26.2183, 78.1877],   // Gwalior
-  [21.1458, 79.0882],   // Nagpur
-  [17.3850, 78.4867],   // Hyderabad
-  [15.8281, 78.1355],   // Kurnool
-  [12.9716, 77.5946],   // Bengaluru
-  [8.0883, 77.5385]     // Kanyakumari
-];
+    // 🔒 Prevent scroll hijacking
+    scrollWheelZoom: false,
+    touchZoom: false,
 
-// Draw route on map
-L.polyline(routeCoords, {
-  color: '#FF0000',
-  weight: 4,
-  opacity: 0.8,
-  dashArray: '5, 5'
-}).addTo(map).bindPopup('NH-44 Highway Route');
+    // Controlled interactions
+    doubleClickZoom: true,
+    boxZoom: false,
+    keyboard: false,
 
-// Add markers for major cities with enhanced highlighting
-var cities = [
-  { name: 'Srinagar', lat: 34.0837, lng: 74.7973 },
-  { name: 'Chandigarh', lat: 30.7333, lng: 76.8277 },
-  { name: 'Delhi', lat: 28.6139, lng: 77.2090 },
-  { name: 'Nagpur', lat: 21.1458, lng: 79.0882 },
-  { name: 'Hyderabad', lat: 17.3850, lng: 78.4867 },
-  { name: 'Bengaluru', lat: 12.9716, lng: 77.5946 },
-  { name: 'Kanyakumari', lat: 8.0883, lng: 77.5385 }
-];
-
-cities.forEach(city => {
-  // Create highlighted circular marker
-  L.circleMarker([city.lat, city.lng], {
-    radius: 12,
-    fillColor: '#FF6B35',
-    color: '#FFFFFF',
-    weight: 3,
-    opacity: 1,
-    fillOpacity: 0.9
-  }).addTo(map).bindPopup(`<strong>${city.name}</strong>`);
-  
-  // Add glowing effect with a slightly larger circle
-  L.circleMarker([city.lat, city.lng], {
-    radius: 16,
-    fillColor: 'transparent',
-    color: '#FF6B35',
-    weight: 2,
-    opacity: 0.5,
-    fillOpacity: 0,
-    dashArray: '3, 3'
-  }).addTo(map);
-});
-
-console.log('✓ Map initialized with route and cities');
-
-
-// Load India GeoJSON map with state boundaries
-fetch('https://cdn.jsdelivr.net/gh/udit-001/india-maps-data@8d907bc/geojson/india.geojson')
-  .then(response => response.json())
-  .then(data => {
-    L.geoJSON(data, {
-      style: {
-        color: '#cccccc',
-        weight: 1,
-        opacity: 0.5,
-        fillColor: '#f5f5f5',
-        fillOpacity: 0.2
-      }
-    }).addTo(map);
+    // Lock India bounds (prevents zoom-out madness)
+    maxBounds: [
+      [6, 68],   // South-West India
+      [37, 98]   // North-East India
+    ],
+    maxBoundsViscosity: 1.0
   });
 
-console.log('✓ Complete setup finished');
+  // Add zoom buttons only
+  L.control.zoom({ position: "topright" }).addTo(map);
+
+  // Map tiles
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "© OpenStreetMap contributors",
+    noWrap: true
+  }).addTo(map);
+
+  // NH-44 route
+  const route = [
+    [34.0837, 74.7973],
+    [30.7333, 76.8277],
+    [28.6139, 77.2090],
+    [21.1458, 79.0882],
+    [17.3850, 78.4867],
+    [12.9716, 77.5946],
+    [8.0883, 77.5385]
+  ];
+
+  L.polyline(route, {
+    color: "#ff0000",
+    weight: 4,
+    dashArray: "6 6"
+  }).addTo(map);
+
+  return map;
+}
