@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NH-44: Srinagar to Kanyakumari</title>
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet/dist/leaflet.css"
+  />
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>NH-44 Journey: Srinagar → Kanyakumari</h2>
+<div id="distanceInfo" class="distance-info">
+  <div class="distance-container">
+    <div class="distance-item">
+      <div class="distance-label">🛣️ Total Distance</div>
+      <div class="distance-value"><span id="totalDistance">4112</span> km</div>
+    </div>
+    <div class="distance-divider"></div>
+    <div class="distance-item">
+      <div class="distance-label">⏱️ Estimated Time</div>
+      <div class="distance-value"><span id="travelTime">~60</span> Hours</div>
+    </div>
+  </div>
+</div>
+<div id="map"></div>
+
+<h3><span>States and Capitals Along NH-44</span></h3>
+
+<!-- Search Bar -->
+<div class="search-container">
+  <input type="text" id="searchInput" placeholder="🔍 Search states or capitals..." class="search-input">
+</div>
+
+<table id="statesTable" border="1" cellpadding="10" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Image</th>
+      <th>State</th>
+      <th>Capital</th>
+      <th>Specialty & Resources</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<!-- About NH-44 Section -->
+<section id="aboutSection" class="info-section">
+  <h3>ℹ️ About NH-44</h3>
+  <div class="info-content">
+    <p><strong>NH-44 (National Highway 44)</strong> is the longest national highway in India, also known as the Golden Quadrilateral of North-South Corridor. It connects the four major metropolitan cities of India and passes through diverse landscapes, cultures, and economies.</p>
+    <p><strong>Key Facts:</strong></p>
+    <ul>
+      <li>Total Length: 4,112 km</li>
+      <li>States Covered: 12 states</li>
+      <li>Major Cities: Srinagar, Delhi, Agra, Nagpur, Hyderabad, Bengaluru, and Kanyakumari</li>
+      <li>Estd. Driving Time: 59 hours (non-stop)</li>
+      <li>Passes through: Mountains, plains, plateaus, and coastal regions</li>
+    </ul>
+  </div>
+</section>
+
+<!-- Scroll to Top Button -->
+<button id="scrollToTop" class="scroll-top-btn">↑ Top</button>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-section">
+      <h4>About NH-44</h4>
+      <p>Exploring India's longest highway connecting the north and south.</p>
+    </div>
+    <div class="footer-section">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#aboutSection">About</a></li>
+        <li><a href="#statesTable">States</a></li>
+        <li><a href="#timelineSection">Timeline</a></li>
+        <li><a href="#restStopsSection">Rest Stops</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h4>Information</h4>
+      <p>Total Distance: 4,112 km</p>
+      <p>Total States: 12</p>
+      <p>Estd. Time: 59 hours</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 NH-44 Journey Explorer. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- State Details Modal -->
+<div id="stateModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2 id="modalTitle"></h2>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
