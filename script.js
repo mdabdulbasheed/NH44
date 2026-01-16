@@ -115,33 +115,24 @@ function initMap() {
     minZoom: 5,
     maxZoom: 8,
 
-    // 🔒 Prevent scroll hijacking
     scrollWheelZoom: false,
     touchZoom: false,
-
-    // Controlled interactions
     doubleClickZoom: true,
-    boxZoom: false,
-    keyboard: false,
 
-    // Lock India bounds (prevents zoom-out madness)
     maxBounds: [
-      [6, 68],   // South-West India
-      [37, 98]   // North-East India
+      [6, 68],
+      [37, 98]
     ],
     maxBoundsViscosity: 1.0
   });
 
-  // Add zoom buttons only
   L.control.zoom({ position: "topright" }).addTo(map);
 
-  // Map tiles
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "© OpenStreetMap contributors",
     noWrap: true
   }).addTo(map);
 
-  // NH-44 route
   const route = [
     [34.0837, 74.7973],
     [30.7333, 76.8277],
@@ -158,5 +149,21 @@ function initMap() {
     dashArray: "6 6"
   }).addTo(map);
 
+  // 🔒 Click-to-activate logic
+  const overlay = document.getElementById("mapOverlay");
+
+  overlay.addEventListener("click", () => {
+    overlay.classList.add("hidden");
+    map.scrollWheelZoom.enable();
+    map.dragging.enable();
+  });
+
+  map.on("mouseout", () => {
+    map.scrollWheelZoom.disable();
+    map.dragging.disable();
+    overlay.classList.remove("hidden");
+  });
+
   return map;
 }
+// ==========================================
