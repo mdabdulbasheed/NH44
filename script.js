@@ -90,11 +90,18 @@ function setupScroll() {
 // Initialize map
 var map = L.map('map', {
   minZoom: 4,
-  maxZoom: 18,
-  maxBounds: L.latLngBounds(L.latLng(-85, -180), L.latLng(85, 180)),
-  worldCopyJump: false,
-  scrollWheelZoom: false
+  maxZoom: 10,
+  maxBounds: L.latLngBounds(L.latLng(5, 65), L.latLng(38, 98)),
+  maxBoundsViscosity: 1.0,
+  zoomControl: false,
+  scrollWheelZoom: false,
+  touchZoom: false,
+  doubleClickZoom: true,
+  dragging: true
 }).setView([22.5, 78.9], 5);
+
+// Add custom zoom buttons
+L.control.zoom({position: 'topleft'}).addTo(map);
 
 // Add map tiles
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -125,7 +132,7 @@ L.polyline(routeCoords, {
   dashArray: '5, 5'
 }).addTo(map).bindPopup('NH-44 Highway Route');
 
-// Add markers for major cities
+// Add markers for major cities with enhanced highlighting
 var cities = [
   { name: 'Srinagar', lat: 34.0837, lng: 74.7973 },
   { name: 'Chandigarh', lat: 30.7333, lng: 76.8277 },
@@ -137,14 +144,26 @@ var cities = [
 ];
 
 cities.forEach(city => {
+  // Create highlighted circular marker
   L.circleMarker([city.lat, city.lng], {
-    radius: 8,
-    fillColor: '#667eea',
-    color: '#fff',
-    weight: 2,
+    radius: 12,
+    fillColor: '#FF6B35',
+    color: '#FFFFFF',
+    weight: 3,
     opacity: 1,
-    fillOpacity: 0.8
-  }).addTo(map).bindPopup(city.name);
+    fillOpacity: 0.9
+  }).addTo(map).bindPopup(`<strong>${city.name}</strong>`);
+  
+  // Add glowing effect with a slightly larger circle
+  L.circleMarker([city.lat, city.lng], {
+    radius: 16,
+    fillColor: 'transparent',
+    color: '#FF6B35',
+    weight: 2,
+    opacity: 0.5,
+    fillOpacity: 0,
+    dashArray: '3, 3'
+  }).addTo(map);
 });
 
 console.log('✓ Map initialized with route and cities');
